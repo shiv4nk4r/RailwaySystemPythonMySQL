@@ -26,6 +26,7 @@ if __name__ == "__main__":
 	print("Enter your choice")
 	print("1.Login")
 	print("2.Register")
+	print("3.Admin Login")
 
 	choice = raw_input()
 	obj.clear()
@@ -100,7 +101,16 @@ if __name__ == "__main__":
 					obj.DB.Cancel_Ticket(cancel_pnr, userID, trainNOtoCancel)
 				else:
 					print("No Booked Tickets")
-
+			elif(choice_new == "3"):
+				print("Printing All your Ticekts")
+				sql = "SELECT * FROM TICKETS WHERE UserID = %s"
+				val = (str(userID))
+				rows = obj.DB.cursor.execute(sql, val)
+				if(rows>0):
+					for r in obj.DB.cursor.fetchall():
+						print(r[2])
+				else:
+					print("No Tickets Booked for userID %s" % userID)
 	if(choice == "2"):
 		print("Enter Name")
 		userName = raw_input()
@@ -109,3 +119,55 @@ if __name__ == "__main__":
 		print("Enter Age")
 		userAge = raw_input()
 		print("UseID is: " + str(obj.DB.Add_Passenger(userName, userPass, userAge)))
+	if(choice == "3"):
+		print("Enter UserName:")
+		userName = raw_input()
+		obj.clear()
+		print("Enter password:")
+		userPass = raw_input()
+		obj.clear()
+		if(userName=="Admin" and userPass == "123456789"):
+			print("Welcome, Admin")
+			obj.animate.dots(3)
+			print("1.Trains")
+			print("2.Stations")
+			print("3.Passengers")
+			choice = raw_input()
+			obj.animate.dots(4)
+			if(choice == "1"):
+				obj.clear()
+				print("1.Add a Train")
+				print("2.View All Trains")
+				choice_new = raw_input()
+				if(choice_new == "1"):
+					print("Enter TrainName, Source, Destination, SeatsNormal")
+					Tname = raw_input()
+					Tsource = raw_input()
+					Tdestination = raw_input()
+					Tseats = raw_input()
+					obj.clear()
+					obj.DB.Add_Train(Tname, Tsource, Tdestination, 10, Tseats)
+				elif(choice_new == "2"):
+					obj.clear()
+					print("TrainNo, TrainName, SeatsWaiting, SeatsNormal, Source, Destination")
+					obj.DB.showTable_Details("Trains")
+			elif(choice == "2"):
+				obj.clear()
+				print("1.Add a Station")
+				print("2.View All Stations")
+				choice_new = raw_input()
+				if(choice_new=="1"):
+					print("Enter Station name")
+					name = raw_input()
+					obj.clear()
+					obj.DB.Add_Stations(name)
+				elif(choice_new == "2"):
+					obj.clear()
+					print("Station Name, Station ID")
+					obj.DB.showTable_Details("Stations")
+			elif(choice == "3"):
+				obj.clear()
+				print("UserName, password, UserID, Age")
+				obj.DB.showTable_Details("Passenger")
+		else:
+			print("Invalid Credentials, Quitting the application") 

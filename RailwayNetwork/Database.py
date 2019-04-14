@@ -73,7 +73,7 @@ class Database:
 		self.animate.dots(3)
 		self.cursor.execute("SELECT * FROM %s" % Name)
 		for row in self.cursor.fetchall():
-			print(" ".join(map(str,row)))
+			print(", ".join(map(str,row)))
 
 	def showTable_Format(self, Name):
 		print("Showing format for %s" %Name)
